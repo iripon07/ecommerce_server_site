@@ -9,7 +9,7 @@ export interface IUser extends Document {
   address?: string;
   role: Role;
   phone?: string;
-  isAdmin: boolean;
+  acceptTerms: boolean;
   createdAt: Date;
   updatedAt: Date;
 }

@@ -34,10 +34,7 @@ const UserSchema = new Schema<IUser>(
       type: String,
       trim: true,
     },
-    isAdmin: {
-      type: Boolean,
-      default: false,
-    },
+    acceptTerms: { type: Boolean, required: true },
   },
   {
     timestamps: true,
