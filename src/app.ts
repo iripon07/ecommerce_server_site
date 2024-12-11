@@ -20,6 +20,7 @@ app.get("/", (req: Request, res: Response) => {
   });
 });
 
+// Use ApplicationRouters for API routes
 app.use("/api/v1", ApplicationRouters);
 
 // Export the application
