@@ -3,25 +3,44 @@ import mongoose, { Model } from "mongoose";
 
 
 
-export interface IProduct  {
+import { Document } from "mongoose";
+
+export interface IProduct extends Document {
   name: string;
+  slug: string;
+  category: string;
+  brand: string;
   description: string;
   price: number;
-  category: string[]; 
-  brand: string;
+  discount?: number; // Optional field
+  currency: string;
   stock: number;
-  images: { url: string; publicId: string }[];
-  ratings: number; 
+  images: {
+    url: string;
+    alt: string;
+  }[];
+  rating: {
+    average: number;
+    count: number;
+  };
   reviews: {
-    userId: mongoose.Types.ObjectId;
-    name: string;
-    rating: number;
+    user: string;
     comment: string;
-    createdAt: Date;
-  }[]; 
-  isFeatured: boolean; 
+    rating: number;
+    date: Date;
+  }[];
+  specifications: {
+    [key: string]: string; // Dynamic key-value pairs for specifications
+  };
+  variants: {
+    id: string;
+    color: string;
+    price: number;
+    stock: number;
+  }[];
   createdAt: Date;
   updatedAt: Date;
 }
+
 
 export type ProductModel = Model<IProduct, Record<string, unknown>>;

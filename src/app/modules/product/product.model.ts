@@ -1,74 +1,53 @@
 import { model, Schema } from "mongoose";
 import { IProduct, ProductModel } from "./product.interface";
 
-const ProductSchema = new Schema<IProduct>(
+const productSchema = new Schema<IProduct>(
   {
-    name: {
-      type: String,
-      required: [true, "Product name is required"],
-      trim: true,
-      maxlength: [100, "Product name cannot exceed 100 characters"],
-    },
-    description: {
-      type: String,
-      required: [true, "Product description is required"],
-      maxlength: [2000, "Product description cannot exceed 2000 characters"],
-    },
-    price: {
-      type: Number,
-      required: [true, "Product price is required"],
-      min: [0, "Product price cannot be less than 0"],
-    },
-    category: {
-      type: [String],
-      required: [true, "At least one category is required"],
-    },
-    brand: {
-      type: String,
-      required: [true, "Brand is required"],
-    },
-    stock: {
-      type: Number,
-      required: [true, "Stock is required"],
-      min: [0, "Stock cannot be less than 0"],
-      default: 0,
-    },
+    name: { type: String, required: true },
+    slug: { type: String, required: true, unique: true },
+    category: { type: String, required: true },
+    brand: { type: String, required: true },
+    description: { type: String, required: true },
+    price: { type: Number, required: true },
+    discount: { type: Number, default: 0 },
+    currency: { type: String, required: true },
+    stock: { type: Number, required: true },
     images: [
       {
         url: { type: String, required: true },
-        publicId: { type: String, required: true },
+        alt: { type: String, required: true },
       },
     ],
-    ratings: {
-      type: Number,
-      default: 0,
-      min: [0, "Ratings cannot be less than 0"],
-      max: [5, "Ratings cannot exceed 5"],
+    rating: {
+      average: { type: Number, default: 0 },
+      count: { type: Number, default: 0 },
     },
     reviews: [
       {
-        userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
-        name: { type: String, required: true },
-        rating: {
-          type: Number,
-          required: true,
-          min: [0, "Rating cannot be less than 0"],
-          max: [5, "Rating cannot exceed 5"],
-        },
+        user: { type: String, required: true },
         comment: { type: String, required: true },
-        createdAt: { type: Date, default: Date.now },
+        rating: { type: Number, required: true },
+        date: { type: Date, default: Date.now },
       },
     ],
-    isFeatured: {
-      type: Boolean,
-      default: false,
+    specifications: {
+      type: Map,
+      of: String, // Allows flexible key-value pairs for specifications
     },
+    variants: [
+      {
+        id: { type: String, required: true },
+        color: { type: String, required: true },
+        price: { type: Number, required: true },
+        stock: { type: Number, required: true },
+      },
+    ],
   },
   {
-    timestamps: true,
+    timestamps: true, // Automatically manages createdAt and updatedAt fields
   }
 );
 
-const Product = model<IProduct, ProductModel>("Product", ProductSchema);
+const Product = model<IProduct, ProductModel>("Product", productSchema);
 
 export default Product;
