@@ -3,7 +3,7 @@ import ApiError from "../../../errors/ApiError";
 import { IProduct } from "./product.interface";
 import Product from "./product.model";
 
-const productCreate = async (product: IProduct): Promise<IProduct | null> => {
+const createProduct = async (product: IProduct): Promise<IProduct | null> => {
   const productCreated = await Product.create(product);
   if (!productCreated) {
     throw new ApiError(
@@ -16,6 +16,33 @@ const productCreate = async (product: IProduct): Promise<IProduct | null> => {
   return result;
 };
 
+const getAllProducts = async () => {
+  const result = await Product.find();
+  return result;
+};
+
+const getSingleProduct = async (id: string): Promise<IProduct | null> => {
+  const result = await Product.findById({ _id: id });
+  console.log("expected result", result);
+  if (!result) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "Product not found");
+  }
+  return result;
+};
+
+
+const updateProduct = async (id: string): Promise<IProduct | null> => {
+  const result = await Product.findById({ _id: id });
+  console.log("expected result", result);
+  if (!result) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "Product not found");
+  }
+  return result;
+};
+
 export const ProductService = {
-  productCreate,
+  createProduct,
+  getAllProducts,
+  getSingleProduct,
+  updateProduct,
 };
