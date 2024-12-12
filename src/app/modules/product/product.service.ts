@@ -30,13 +30,19 @@ const getSingleProduct = async (id: string): Promise<IProduct | null> => {
   return result;
 };
 
-
-const updateProduct = async (id: string): Promise<IProduct | null> => {
-  const result = await Product.findById({ _id: id });
-  console.log("expected result", result);
-  if (!result) {
-    throw new ApiError(StatusCodes.NOT_FOUND, "Product not found");
+const updateProduct = async (
+  id: string,
+  payload: Partial<IProduct>
+): Promise<IProduct | null> => {
+  const isProductExist = await Product.findById(id);
+  if (!isProductExist) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "Product doesn't exist");
   }
+
+  const result = await Product.findByIdAndUpdate({ _id: id }, payload, {
+    new: true,
+  });
+
   return result;
 };
 

@@ -28,20 +28,7 @@ const getAllProducts: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
-
 const getSingleProduct: RequestHandler = catchAsync(async (req, res) => {
-  const id = req.params.id;
-  console.log('id check', id);
-  const result = await ProductService.getSingleProduct(id);
-  sendResponse(res, {
-    statusCode: StatusCodes.OK,
-    success: true,
-    data: result,
-    message: "Product retrieved successfully!",
-  });
-});
-
-const updateProduct: RequestHandler = catchAsync(async (req, res) => {
   const id = req.params.id;
   console.log("id check", id);
   const result = await ProductService.getSingleProduct(id);
@@ -53,6 +40,18 @@ const updateProduct: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
+const updateProduct: RequestHandler = catchAsync(async (req, res) => {
+  const id = req.params.id;
+  const product = req.body;
+  console.log("id check", id);
+  const result = await ProductService.updateProduct(id, product);
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    data: result,
+    message: "Product retrieved successfully!",
+  });
+});
 
 export const ProductController = {
   createProduct,
